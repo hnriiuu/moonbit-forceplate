@@ -1,0 +1,36 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "hnriiuu/moonbit_forceplate/asymmetry"
+
+import {
+  "hnriiuu/moonbit_forceplate/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn analyze_dual_plate_trials(@core.ForceTrial, @core.ForceTrial, Double) -> AsymmetryReport
+
+pub fn calculate_abs_percent_diff(Double, Double) -> Double
+
+pub fn calculate_asymmetry_ratio(Double, Double) -> Double
+
+pub fn calculate_symmetry_index(Double, Double) -> Double
+
+// Errors
+
+// Types and methods
+pub struct AsymmetryReport {
+  left_share_percent : Double
+  right_share_percent : Double
+  symmetry_index_si : Double
+  asymmetry_ratio_ar : Double
+  abs_percent_difference : Double
+  braking_peak_asymmetry_percent : Double
+  propulsive_peak_asymmetry_percent : Double
+  landing_peak_asymmetry_percent : Double
+  dominant_side : String
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
+
