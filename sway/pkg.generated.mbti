@@ -1,0 +1,38 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "hnriiuu/moonbit_forceplate/sway"
+
+import {
+  "hnriiuu/moonbit_forceplate/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn analyze_sway_trial(@core.ForceTrial) -> SwayReport
+
+pub fn compute_cop_95_ellipse_area(Array[@core.CoPPoint]) -> Double
+
+pub fn compute_cop_path_length(Array[@core.CoPPoint]) -> Double
+
+pub fn extract_ap_series(Array[@core.CoPPoint]) -> Array[Double]
+
+pub fn extract_ml_series(Array[@core.CoPPoint]) -> Array[Double]
+
+// Errors
+
+// Types and methods
+pub struct SwayReport {
+  total_path_length_mm : Double
+  mean_velocity_mm_s : Double
+  ap_range_mm : Double
+  ap_mean_mm : Double
+  ap_std_dev_mm : Double
+  ml_range_mm : Double
+  ml_mean_mm : Double
+  ml_std_dev_mm : Double
+  ellipse_95_area_mm2 : Double
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
+
