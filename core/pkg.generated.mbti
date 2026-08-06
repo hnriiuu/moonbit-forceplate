@@ -1,0 +1,87 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "hnriiuu/moonbit_forceplate/core"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn compute_max(Array[Double]) -> Double
+
+pub fn compute_mean(Array[Double]) -> Double
+
+pub fn compute_min(Array[Double]) -> Double
+
+pub fn compute_std_dev(Array[Double]) -> Double
+
+// Errors
+
+// Types and methods
+pub struct CalibrationParams {
+  gain_fx : Double
+  gain_fy : Double
+  gain_fz : Double
+  offset_fx : Double
+  offset_fy : Double
+  offset_fz : Double
+  plate_origin_z : Double
+} derive(Eq, @debug.Debug)
+pub fn CalibrationParams::default() -> Self
+
+pub struct CoPPoint {
+  x : Double
+  y : Double
+} derive(Eq, @debug.Debug)
+pub fn CoPPoint::distance_to(Self, Self) -> Double
+pub fn CoPPoint::new(Double, Double) -> Self
+pub fn CoPPoint::zero() -> Self
+
+pub struct ForceSample {
+  timestamp : Double
+  force : Vec3
+  moment : Vec3
+  cop : CoPPoint
+} derive(Eq, @debug.Debug)
+pub fn ForceSample::new(Double, Vec3, Vec3, CoPPoint) -> Self
+
+pub struct ForceTrial {
+  metadata : TrialMetadata
+  samples : Array[ForceSample]
+} derive(Eq, @debug.Debug)
+pub fn ForceTrial::apply_calibration(Self, CalibrationParams) -> Self
+pub fn ForceTrial::duration(Self) -> Double
+pub fn ForceTrial::get_cop_points(Self) -> Array[CoPPoint]
+pub fn ForceTrial::get_fx(Self) -> Array[Double]
+pub fn ForceTrial::get_fy(Self) -> Array[Double]
+pub fn ForceTrial::get_fz(Self) -> Array[Double]
+pub fn ForceTrial::get_timestamps(Self) -> Array[Double]
+pub fn ForceTrial::length(Self) -> Int
+pub fn ForceTrial::new(TrialMetadata, Array[ForceSample]) -> Self
+pub fn ForceTrial::slice(Self, Int, Int) -> Self
+pub fn ForceTrial::zero_tare(Self, Int) -> Self
+
+pub struct TrialMetadata {
+  subject_id : String
+  sampling_rate : Double
+  nominal_body_mass : Double
+  side : String
+} derive(Eq, @debug.Debug)
+pub fn TrialMetadata::new(String, Double, Double, String) -> Self
+
+pub struct Vec3 {
+  x : Double
+  y : Double
+  z : Double
+} derive(Eq, @debug.Debug)
+pub fn Vec3::add(Self, Self) -> Self
+pub fn Vec3::dot(Self, Self) -> Double
+pub fn Vec3::magnitude(Self) -> Double
+pub fn Vec3::new(Double, Double, Double) -> Self
+pub fn Vec3::scale(Self, Double) -> Self
+pub fn Vec3::sub(Self, Self) -> Self
+pub fn Vec3::zero() -> Self
+
+// Type aliases
+
+// Traits
+
