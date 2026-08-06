@@ -1,0 +1,64 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "hnriiuu/moonbit_forceplate/event"
+
+import {
+  "hnriiuu/moonbit_forceplate/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn compute_phase_durations(Array[Double], PhaseIntervals) -> PhaseDurations
+
+pub fn detect_all_jump_events(@core.ForceTrial, Double) -> EventIndices
+
+pub fn detect_landing_index(Array[Double], Int, Double) -> Int
+
+pub fn detect_movement_onset_5sd(Array[Double], Double, Double) -> Int
+
+pub fn detect_takeoff_index(Array[Double], Int, Double) -> Int
+
+pub fn find_min_force_index(Array[Double], Int, Int) -> Int
+
+pub fn find_peak_force_index(Array[Double], Int, Int) -> Int
+
+pub fn segment_jump_phases(Array[Double], Array[Double], EventIndices, Double) -> PhaseIntervals
+
+// Errors
+
+// Types and methods
+pub struct EventIndices {
+  onset_idx : Int
+  onset_timestamp : Double
+  min_force_idx : Int
+  min_force_timestamp : Double
+  takeoff_idx : Int
+  takeoff_timestamp : Double
+  landing_idx : Int
+  landing_timestamp : Double
+  peak_force_idx : Int
+  peak_force_timestamp : Double
+} derive(Eq, @debug.Debug)
+pub fn EventIndices::new(Int, Double, Int, Double, Int, Double, Int, Double, Int, Double) -> Self
+
+pub struct PhaseDurations {
+  unloading_duration : Double
+  braking_duration : Double
+  propulsive_duration : Double
+  flight_duration : Double
+  contact_duration : Double
+  total_movement_duration : Double
+} derive(Eq, @debug.Debug)
+
+pub struct PhaseIntervals {
+  quiet_phase : (Int, Int)
+  unloading_phase : (Int, Int)
+  braking_phase : (Int, Int)
+  propulsive_phase : (Int, Int)
+  flight_phase : (Int, Int)
+  landing_phase : (Int, Int)
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
+
