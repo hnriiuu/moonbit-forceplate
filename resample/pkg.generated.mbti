@@ -1,0 +1,41 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "hnriiuu/moonbit_forceplate/resample"
+
+import {
+  "hnriiuu/moonbit_forceplate/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn fit_cubic_spline(Array[Double], Array[Double]) -> CubicSpline
+
+pub fn lerp(Double, Double, Double, Double, Double) -> Double
+
+pub fn resample_series_cubic(Array[Double], Array[Double], Double) -> (Array[Double], Array[Double])
+
+pub fn resample_trial(@core.ForceTrial, Double) -> @core.ForceTrial
+
+pub fn time_normalize_signal(Array[Double], Int) -> Array[Double]
+
+// Errors
+
+// Types and methods
+pub struct CubicSpline {
+  segments : Array[SplineSegment]
+  knots_x : Array[Double]
+} derive(Eq, @debug.Debug)
+pub fn CubicSpline::eval(Self, Double) -> Double
+
+pub struct SplineSegment {
+  x : Double
+  a : Double
+  b : Double
+  c : Double
+  d : Double
+} derive(Eq, @debug.Debug)
+pub fn SplineSegment::eval(Self, Double) -> Double
+
+// Type aliases
+
+// Traits
+
