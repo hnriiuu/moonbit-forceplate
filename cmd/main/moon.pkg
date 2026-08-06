@@ -1,0 +1,10 @@
+import {
+  "hnriiuu/moonbit_forceplate/core",
+  "hnriiuu/moonbit_forceplate/cmd",
+  "hnriiuu/moonbit_forceplate/filter",
+  "hnriiuu/moonbit_forceplate/jump",
+  "hnriiuu/moonbit_forceplate/sway",
+  "hnriiuu/moonbit_forceplate/export",
+}
+
+pkgtype(kind: "executable")
