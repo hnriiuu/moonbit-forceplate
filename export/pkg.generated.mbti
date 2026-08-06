@@ -13,6 +13,8 @@ pub fn export_trial_to_csv(@core.ForceTrial) -> String
 
 pub fn format_cmj_ascii_report(@core.ForceTrial, @jump.CMJReport) -> String
 
+pub fn format_cmj_markdown_report(@core.ForceTrial, @jump.CMJReport) -> String
+
 pub fn generate_ascii_sparkline(Array[Double], Int) -> String
 
 // Errors

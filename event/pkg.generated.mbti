@@ -7,13 +7,19 @@ import {
 }
 
 // Values
+pub fn apply_tkeo(Array[Double]) -> Array[Double]
+
 pub fn compute_phase_durations(Array[Double], PhaseIntervals) -> PhaseDurations
 
 pub fn detect_all_jump_events(@core.ForceTrial, Double) -> EventIndices
 
+pub fn detect_cusum_changepoint(Array[Double], Int, Double, Double) -> Int
+
 pub fn detect_landing_index(Array[Double], Int, Double) -> Int
 
 pub fn detect_movement_onset_5sd(Array[Double], Double, Double) -> Int
+
+pub fn detect_onset_tkeo(Array[Double], Int) -> Int
 
 pub fn detect_takeoff_index(Array[Double], Int, Double) -> Int
 

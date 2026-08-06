@@ -9,6 +9,8 @@ import {
 // Values
 pub fn calculate_impulse(Array[Double], Array[Double], Double, Int, Int) -> ImpulseMetrics
 
+pub fn calculate_mechanical_work(KinematicsWaveform, Double) -> MechanicalEnergyMetrics
+
 pub fn calculate_rfd_metrics(Array[Double], Array[Double], Int) -> RFDMetrics
 
 pub fn compute_kinematics_from_trial(@core.ForceTrial, Double) -> KinematicsWaveform
@@ -43,6 +45,15 @@ pub struct KinematicsWaveform {
   velocity : Array[Double]
   displacement : Array[Double]
   power : Array[Double]
+} derive(Eq, @debug.Debug)
+
+pub struct MechanicalEnergyMetrics {
+  concentric_work_j : Double
+  eccentric_work_j : Double
+  net_work_j : Double
+  peak_kinetic_energy_j : Double
+  peak_potential_energy_j : Double
+  rate_of_power_development_w_s : Double
 } derive(Eq, @debug.Debug)
 
 pub struct RFDMetrics {

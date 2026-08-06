@@ -7,9 +7,13 @@ import {
 }
 
 // Values
+pub fn analyze_cop_spectral_density(Array[Double], Double) -> SpectralSwayReport
+
 pub fn analyze_sway_trial(@core.ForceTrial) -> SwayReport
 
 pub fn compute_cop_95_ellipse_area(Array[@core.CoPPoint]) -> Double
+
+pub fn compute_cop_convex_hull_area(Array[@core.CoPPoint]) -> Double
 
 pub fn compute_cop_path_length(Array[@core.CoPPoint]) -> Double
 
@@ -20,6 +24,16 @@ pub fn extract_ml_series(Array[@core.CoPPoint]) -> Array[Double]
 // Errors
 
 // Types and methods
+pub struct SpectralSwayReport {
+  total_power : Double
+  mean_frequency_hz : Double
+  median_frequency_hz : Double
+  peak_frequency_hz : Double
+  low_freq_power_0_to_0p5hz : Double
+  mid_freq_power_0p5_to_2hz : Double
+  high_freq_power_2_to_10hz : Double
+} derive(Eq, @debug.Debug)
+
 pub struct SwayReport {
   total_path_length_mm : Double
   mean_velocity_mm_s : Double

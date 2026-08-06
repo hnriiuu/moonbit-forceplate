@@ -12,7 +12,15 @@ pub fn analyze_cmj_trial(@core.ForceTrial, Double) -> CMJReport
 
 pub fn analyze_drop_jump_trial(@core.ForceTrial, Double) -> DropJumpReport
 
+pub fn analyze_imtp_trial(@core.ForceTrial, Double) -> IMTPReport
+
+pub fn analyze_pogo_trial(@core.ForceTrial, Double) -> PogoTestReport
+
 pub fn analyze_sj_trial(@core.ForceTrial, Double) -> SJReport
+
+pub fn calculate_dynamic_strength_deficit(Double, Double) -> Double
+
+pub fn calculate_jump_stiffness(Array[Double], Array[Double], Double, Double) -> StiffnessReport
 
 pub fn sub_array(Array[Double], Int, Int) -> Array[Double]
 
@@ -48,6 +56,30 @@ pub struct DropJumpReport {
   events : @event.EventIndices
 } derive(Eq, @debug.Debug)
 
+pub struct IMTPReport {
+  peak_force_n : Double
+  peak_force_rel_bw : Double
+  force_at_50ms_n : Double
+  force_at_100ms_n : Double
+  force_at_150ms_n : Double
+  force_at_200ms_n : Double
+  rfd_0_50ms_n_s : Double
+  rfd_0_100ms_n_s : Double
+  rfd_0_150ms_n_s : Double
+  rfd_0_200ms_n_s : Double
+  peak_rfd_n_s : Double
+  time_to_peak_force_s : Double
+} derive(Eq, @debug.Debug)
+
+pub struct PogoTestReport {
+  num_hops : Int
+  mean_contact_time_s : Double
+  mean_flight_time_s : Double
+  mean_rsi : Double
+  contact_time_cv_percent : Double
+  rsi_max : Double
+} derive(Eq, @debug.Debug)
+
 pub struct SJReport {
   jump_height_flight_m : Double
   jump_height_impulse_m : Double
@@ -57,6 +89,14 @@ pub struct SJReport {
   countermovement_dip_detected : Bool
   max_countermovement_dip_n : Double
   events : @event.EventIndices
+} derive(Eq, @debug.Debug)
+
+pub struct StiffnessReport {
+  vertical_stiffness_n_m : Double
+  leg_stiffness_n_m : Double
+  center_of_mass_displacement_m : Double
+  peak_impact_force_n : Double
+  loading_rate_n_s : Double
 } derive(Eq, @debug.Debug)
 
 // Type aliases

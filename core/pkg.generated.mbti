@@ -6,11 +6,17 @@ import {
 }
 
 // Values
+pub fn compute_kurtosis(Array[Double]) -> Double
+
 pub fn compute_max(Array[Double]) -> Double
 
 pub fn compute_mean(Array[Double]) -> Double
 
 pub fn compute_min(Array[Double]) -> Double
+
+pub fn compute_rms(Array[Double]) -> Double
+
+pub fn compute_skewness(Array[Double]) -> Double
 
 pub fn compute_std_dev(Array[Double]) -> Double
 
@@ -59,6 +65,23 @@ pub fn ForceTrial::length(Self) -> Int
 pub fn ForceTrial::new(TrialMetadata, Array[ForceSample]) -> Self
 pub fn ForceTrial::slice(Self, Int, Int) -> Self
 pub fn ForceTrial::zero_tare(Self, Int) -> Self
+
+pub struct Matrix3x3 {
+  m00 : Double
+  m01 : Double
+  m02 : Double
+  m10 : Double
+  m11 : Double
+  m12 : Double
+  m20 : Double
+  m21 : Double
+  m22 : Double
+} derive(Eq, @debug.Debug)
+pub fn Matrix3x3::determinant(Self) -> Double
+pub fn Matrix3x3::identity() -> Self
+pub fn Matrix3x3::inverse(Self) -> Self
+pub fn Matrix3x3::new(Double, Double, Double, Double, Double, Double, Double, Double, Double) -> Self
+pub fn Matrix3x3::transform_vec(Self, Vec3) -> Vec3
 
 pub struct TrialMetadata {
   subject_id : String

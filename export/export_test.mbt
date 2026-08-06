@@ -49,3 +49,27 @@ test "CMJ ASCII report formatting" {
   assert_true(rpt.contains("FORCE PLATE BIOMECHANICS REPORT"))
   assert_true(rpt.contains("Subj11"))
 }
+
+///|
+test "CMJ Markdown report formatting with LaTeX" {
+  let meta = @core.TrialMetadata::new("Subj11", 1000.0, 70.0, "both")
+  let samples : Array[@core.ForceSample] = []
+  let bw_n = 70.0 * 9.80665
+  for i = 0; i < 200; i = i + 1 {
+    let t = i.to_double() / 1000.0
+    samples.push(
+      @core.ForceSample::new(
+        t,
+        @core.Vec3::new(0.0, 0.0, bw_n),
+        @core.Vec3::zero(),
+        @core.CoPPoint::zero(),
+      ),
+    )
+  }
+  let trial = @core.ForceTrial::new(meta, samples)
+  let cmj = @jump.analyze_cmj_trial(trial, 70.0)
+  let md = @export.format_cmj_markdown_report(trial, cmj)
+
+  assert_true(md.contains("# Countermovement Jump (CMJ) Biomechanics Report"))
+  assert_true(md.contains("Jump Height (Flight)"))
+}

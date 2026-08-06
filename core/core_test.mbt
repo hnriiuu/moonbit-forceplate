@@ -79,3 +79,36 @@ test "ForceTrial calibration and zero tare" {
   assert_eq(fz_tared[0], 0.0)
   assert_eq(fz_tared[1], 0.0)
 }
+
+///|
+test "Matrix3x3 operations, determinant, and inversion" {
+  let m = @core.Matrix3x3::new(1.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 4.0)
+  let v = @core.Vec3::new(3.0, 5.0, 7.0)
+  let tv = m.transform_vec(v)
+
+  assert_eq(tv.x, 3.0)
+  assert_eq(tv.y, 10.0)
+  assert_eq(tv.z, 28.0)
+
+  let det = m.determinant()
+  assert_eq(det, 8.0)
+
+  let inv = m.inverse()
+  let tv_inv = inv.transform_vec(tv)
+  assert_true((tv_inv.x - 3.0).abs() < 0.0001)
+  assert_true((tv_inv.y - 5.0).abs() < 0.0001)
+  assert_true((tv_inv.z - 7.0).abs() < 0.0001)
+}
+
+///|
+test "RMS, Skewness, Kurtosis calculations" {
+  let arr : Array[Double] = [1.0, 2.0, 3.0, 4.0, 5.0]
+  let rms = @core.compute_rms(arr)
+  assert_true((rms - 3.3166).abs() < 0.01)
+
+  let skew = @core.compute_skewness(arr)
+  assert_true(skew.abs() < 0.0001)
+
+  let kurt = @core.compute_kurtosis(arr)
+  assert_true(kurt < 0.0)
+}

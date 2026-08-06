@@ -8,6 +8,8 @@ import {
 // Values
 pub fn generate_synthetic_cmj_trial(String, Double, Double) -> @core.ForceTrial
 
+pub fn generate_synthetic_imtp_trial(String, Double, Double) -> @core.ForceTrial
+
 pub fn generate_synthetic_sway_trial(String, Double, Double) -> @core.ForceTrial
 
 // Errors

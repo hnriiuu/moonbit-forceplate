@@ -1,141 +1,186 @@
 ///|
-fn tan_approx(x : Double) -> Double {
+fn sin_approx(x : Double) -> Double {
   let x2 = x * x
-  let sin_x = x * (1.0 - x2 / 6.0 * (1.0 - x2 / 20.0))
-  let cos_x = 1.0 - x2 / 2.0 * (1.0 - x2 / 12.0)
-  if cos_x.abs() < 0.000000001 {
-    0.0
-  } else {
-    sin_x / cos_x
-  }
+  x * (1.0 - x2 / 6.0 * (1.0 - x2 / 20.0 * (1.0 - x2 / 42.0)))
 }
 
 ///|
-/// Generates a realistic synthetic Countermovement Jump (CMJ) force plate trial recording.
+/// Generates synthetic Vertical Ground Reaction Force (vGRF) waveform for Countermovement Jump (CMJ).
 pub fn generate_synthetic_cmj_trial(
   subject_id : String,
-  body_mass_kg : Double,
   sampling_rate : Double,
+  body_mass_kg : Double,
 ) -> @core.ForceTrial {
   let meta = @core.TrialMetadata::new(
     subject_id, sampling_rate, body_mass_kg, "both",
   )
-  let bw_n = body_mass_kg * @kinetic.gravity_constant()
-  let dt = 1.0 / sampling_rate
   let samples : Array[@core.ForceSample] = []
+  let g = @kinetic.gravity_constant()
+  let bw_n = body_mass_kg * g
+  let dt = 1.0 / sampling_rate
 
-  let mut current_t = 0.0
-
-  // 1. Quiet standing (0.5 s)
-  let n_quiet = (0.5 * sampling_rate).to_int()
+  // 1. Quiet standing (500 ms)
+  let n_quiet = (0.500 * sampling_rate).to_int()
   for i = 0; i < n_quiet; i = i + 1 {
-    let noise = if i % 2 == 0 { 2.0 } else { -2.0 }
+    let t = i.to_double() * dt
+    let noise = if i % 2 == 0 { 2.5 } else { -2.5 }
     samples.push(
       @core.ForceSample::new(
-        current_t,
+        t,
         @core.Vec3::new(0.0, 0.0, bw_n + noise),
         @core.Vec3::zero(),
-        @core.CoPPoint::zero(),
+        @core.CoPPoint::new(0.0, 0.0),
       ),
     )
-    current_t = current_t + dt
   }
 
-  // 2. Unloading phase (0.2 s down to 0.45 * BW)
-  let n_unloading = (0.2 * sampling_rate).to_int()
-  for i = 0; i < n_unloading; i = i + 1 {
-    let ratio = i.to_double() / n_unloading.to_double()
-    let fz = bw_n - bw_n * 0.55 * ratio
+  // 2. Unloading & Dip Phase (200 ms)
+  let n_dip = (0.200 * sampling_rate).to_int()
+  let start_t1 = n_quiet.to_double() * dt
+  let pi = 3.14159265358979323846
+  for i = 0; i < n_dip; i = i + 1 {
+    let t = start_t1 + i.to_double() * dt
+    let ratio = i.to_double() / n_dip.to_double() * pi
+    let fz = bw_n - bw_n * 0.45 * sin_approx(ratio)
     samples.push(
       @core.ForceSample::new(
-        current_t,
+        t,
         @core.Vec3::new(0.0, 0.0, fz),
         @core.Vec3::zero(),
-        @core.CoPPoint::zero(),
+        @core.CoPPoint::new(0.0, 0.0),
       ),
     )
-    current_t = current_t + dt
   }
 
-  // 3. Propulsive phase (0.25 s up to 2.3 * BW)
-  let n_prop = (0.25 * sampling_rate).to_int()
+  // 3. Braking & Propulsive Drive Phase (250 ms)
+  let n_prop = (0.250 * sampling_rate).to_int()
+  let start_t2 = start_t1 + n_dip.to_double() * dt
   for i = 0; i < n_prop; i = i + 1 {
-    let ratio = i.to_double() / n_prop.to_double()
-    let fz = bw_n * 0.45 + bw_n * 1.85 * ratio
+    let t = start_t2 + i.to_double() * dt
+    let ratio = i.to_double() / n_prop.to_double() * pi
+    let fz = bw_n + bw_n * 1.5 * sin_approx(ratio)
     samples.push(
       @core.ForceSample::new(
-        current_t,
+        t,
         @core.Vec3::new(0.0, 0.0, fz),
         @core.Vec3::zero(),
-        @core.CoPPoint::zero(),
+        @core.CoPPoint::new(0.0, 0.0),
       ),
     )
-    current_t = current_t + dt
   }
 
-  // 4. Flight phase (0.45 s at 0 N)
-  let n_flight = (0.45 * sampling_rate).to_int()
+  // 4. Flight Phase (400 ms)
+  let n_flight = (0.400 * sampling_rate).to_int()
+  let start_t3 = start_t2 + n_prop.to_double() * dt
   for i = 0; i < n_flight; i = i + 1 {
+    let t = start_t3 + i.to_double() * dt
     samples.push(
       @core.ForceSample::new(
-        current_t,
+        t,
         @core.Vec3::zero(),
         @core.Vec3::zero(),
         @core.CoPPoint::zero(),
       ),
     )
-    current_t = current_t + dt
   }
 
-  // 5. Landing impact phase (0.3 s peak 2.6 * BW)
-  let n_land = (0.3 * sampling_rate).to_int()
+  // 5. Landing Impact Phase (350 ms)
+  let n_land = (0.350 * sampling_rate).to_int()
+  let start_t4 = start_t3 + n_flight.to_double() * dt
   for i = 0; i < n_land; i = i + 1 {
-    let ratio = i.to_double() / n_land.to_double()
-    let fz = if ratio < 0.3 {
-      bw_n * 2.6 * (ratio / 0.3)
-    } else {
-      bw_n * 2.6 * (1.0 - (ratio - 0.3) / 0.7) + bw_n * (ratio - 0.3) / 0.7
-    }
+    let t = start_t4 + i.to_double() * dt
+    let decay = 1.0 - i.to_double() / n_land.to_double()
+    let fz = bw_n + bw_n * 2.2 * decay
     samples.push(
       @core.ForceSample::new(
-        current_t,
+        t,
         @core.Vec3::new(0.0, 0.0, fz),
         @core.Vec3::zero(),
-        @core.CoPPoint::zero(),
+        @core.CoPPoint::new(0.0, 0.0),
       ),
     )
-    current_t = current_t + dt
   }
 
   @core.ForceTrial::new(meta, samples)
 }
 
 ///|
-/// Generates synthetic static balance COP sway trial.
+/// Generates synthetic quiet standing sway trial (COP trajectory).
 pub fn generate_synthetic_sway_trial(
   subject_id : String,
   duration_s : Double,
   sampling_rate : Double,
 ) -> @core.ForceTrial {
   let meta = @core.TrialMetadata::new(subject_id, sampling_rate, 70.0, "both")
-  let dt = 1.0 / sampling_rate
+  let samples : Array[@core.ForceSample] = []
   let n = (duration_s * sampling_rate).to_int()
-  let samples : Array[@core.ForceSample] = Array::new(capacity=n)
+  let dt = 1.0 / sampling_rate
+  let bw_n = 70.0 * 9.80665
   let pi = 3.14159265358979323846
 
-  let mut t = 0.0
   for i = 0; i < n; i = i + 1 {
-    let cop_x = 5.0 * tan_approx(i.to_double() * 2.0 * pi * 0.3 / sampling_rate)
-    let cop_y = 8.0 * tan_approx(i.to_double() * 2.0 * pi * 0.5 / sampling_rate)
+    let t = i.to_double() * dt
+    let cop_x = 5.0 * sin_approx(t * 0.5 * pi)
+    let cop_y = 8.0 * sin_approx(t * 0.3 * pi)
     samples.push(
       @core.ForceSample::new(
         t,
-        @core.Vec3::new(0.0, 0.0, 686.4),
+        @core.Vec3::new(0.0, 0.0, bw_n),
         @core.Vec3::zero(),
         @core.CoPPoint::new(cop_x, cop_y),
       ),
     )
-    t = t + dt
   }
+
+  @core.ForceTrial::new(meta, samples)
+}
+
+///|
+/// Generates synthetic Isometric Mid-Thigh Pull (IMTP) force trial.
+pub fn generate_synthetic_imtp_trial(
+  subject_id : String,
+  sampling_rate : Double,
+  body_mass_kg : Double,
+) -> @core.ForceTrial {
+  let meta = @core.TrialMetadata::new(
+    subject_id, sampling_rate, body_mass_kg, "both",
+  )
+  let samples : Array[@core.ForceSample] = []
+  let bw_n = body_mass_kg * 9.80665
+  let dt = 1.0 / sampling_rate
+
+  // 1. Quiet standing (300 ms)
+  let n_quiet = (0.300 * sampling_rate).to_int()
+  for i = 0; i < n_quiet; i = i + 1 {
+    let t = i.to_double() * dt
+    samples.push(
+      @core.ForceSample::new(
+        t,
+        @core.Vec3::new(0.0, 0.0, bw_n),
+        @core.Vec3::zero(),
+        @core.CoPPoint::zero(),
+      ),
+    )
+  }
+
+  // 2. Maximal Isometric Pull (1500 ms)
+  let n_pull = (1.500 * sampling_rate).to_int()
+  let start_t = n_quiet.to_double() * dt
+  let peak_n = bw_n * 4.2
+  for i = 0; i < n_pull; i = i + 1 {
+    let t = start_t + i.to_double() * dt
+    let progress = i.to_double() / (0.300 * sampling_rate)
+    let ramp = if progress > 1.0 { 1.0 } else { progress }
+    let fz = bw_n + (peak_n - bw_n) * ramp
+    samples.push(
+      @core.ForceSample::new(
+        t,
+        @core.Vec3::new(0.0, 0.0, fz),
+        @core.Vec3::zero(),
+        @core.CoPPoint::zero(),
+      ),
+    )
+  }
+
   @core.ForceTrial::new(meta, samples)
 }

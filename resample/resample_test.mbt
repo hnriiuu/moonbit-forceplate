@@ -6,13 +6,11 @@ test "Lerp test" {
 
 ///|
 test "Cubic Spline fitting and evaluation on quadratic function" {
-  // y = x^2, x in [0, 1, 2, 3, 4]
   let xs : Array[Double] = [0.0, 1.0, 2.0, 3.0, 4.0]
   let ys : Array[Double] = [0.0, 1.0, 4.0, 9.0, 16.0]
 
   let spline = @resample.fit_cubic_spline(xs, ys)
   let y_mid = spline.eval(2.5)
-  // 2.5^2 = 6.25, spline should be extremely close to 6.25
   assert_true((y_mid - 6.25).abs() < 0.05)
 }
 
@@ -44,4 +42,14 @@ test "ForceTrial resampling from 500Hz to 1000Hz" {
   let resampled = @resample.resample_trial(trial, 1000.0)
   assert_eq(resampled.metadata.sampling_rate, 1000.0)
   assert_true(resampled.length() > 90)
+}
+
+///|
+test "Akima Spline fitting and evaluation" {
+  let xs : Array[Double] = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0]
+  let ys : Array[Double] = [0.0, 1.0, 4.0, 9.0, 16.0, 25.0]
+
+  let akima = @resample.fit_akima_spline(xs, ys)
+  let val = akima.eval(2.5)
+  assert_true((val - 6.25).abs() < 0.2)
 }

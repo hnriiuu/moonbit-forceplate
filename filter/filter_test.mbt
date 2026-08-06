@@ -49,3 +49,27 @@ test "Moving average and threshold zeroing" {
   assert_eq(zeroed[2], 0.0)
   assert_eq(zeroed[4], 0.0)
 }
+
+///|
+test "Median filter removes isolated spike artifact" {
+  let sig : Array[Double] = [10.0, 10.0, 10.0, 1000.0, 10.0, 10.0, 10.0]
+  let med = @filter.apply_median_filter(sig, 5)
+  assert_eq(med[3], 10.0)
+}
+
+///|
+test "Notch filter and EMA filtering" {
+  let coeffs = @filter.compute_notch_filter(50.0, 30.0, 1000.0)
+  assert_true(coeffs.b0 > 0.0)
+
+  let sig : Array[Double] = [10.0, 20.0, 30.0, 40.0, 50.0]
+  let ema = @filter.apply_exponential_moving_average(sig, 0.2)
+  assert_eq(ema.length(), 5)
+  assert_true(ema[1] < 20.0)
+}
+
+///|
+test "FIR lowpass Hamming window generation" {
+  let fir = @filter.compute_fir_lowpass_hamming(20.0, 1000.0, 11)
+  assert_eq(fir.length(), 11)
+}
