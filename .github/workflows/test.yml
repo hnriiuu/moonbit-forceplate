@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MoonBit toolchain
+        uses: moonbitlang/setup-moonbit@v1
+        with:
+          version: 'latest'
+
+      - name: MoonBit Check
+        run: moon check
+
+      - name: MoonBit Test
+        run: moon test
+
+      - name: Check Code Formatting
+        run: moon fmt --deny-warn
+
+      - name: Check Package Interface Files (.mbti)
+        run: moon info --deny-warn

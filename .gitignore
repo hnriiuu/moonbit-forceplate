@@ -1,0 +1,12 @@
+# MoonBit build output
+target/
+_build/
+*.mbt.log
+.mooncakes/
+
+# IDE & System
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
