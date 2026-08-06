@@ -1,0 +1,5 @@
+import {
+  "hnriiuu/moonbit_forceplate/core",
+  "hnriiuu/moonbit_forceplate/kinetic",
+  "hnriiuu/moonbit_forceplate/event",
+}

@@ -1,0 +1,65 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "hnriiuu/moonbit_forceplate/jump"
+
+import {
+  "hnriiuu/moonbit_forceplate/core",
+  "hnriiuu/moonbit_forceplate/event",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn analyze_cmj_trial(@core.ForceTrial, Double) -> CMJReport
+
+pub fn analyze_drop_jump_trial(@core.ForceTrial, Double) -> DropJumpReport
+
+pub fn analyze_sj_trial(@core.ForceTrial, Double) -> SJReport
+
+pub fn sub_array(Array[Double], Int, Int) -> Array[Double]
+
+// Errors
+
+// Types and methods
+pub struct CMJReport {
+  jump_height_flight_m : Double
+  jump_height_impulse_m : Double
+  rsi_modified : Double
+  peak_force_n : Double
+  peak_force_rel_bw : Double
+  peak_power_w : Double
+  peak_power_rel_w_kg : Double
+  takeoff_velocity_m_s : Double
+  eccentric_duration_s : Double
+  concentric_duration_s : Double
+  time_to_takeoff_s : Double
+  events : @event.EventIndices
+  phase_durations : @event.PhaseDurations
+} derive(Eq, @debug.Debug)
+
+pub struct DropJumpReport {
+  contact_time_s : Double
+  flight_time_s : Double
+  jump_height_m : Double
+  rsi_flight_contact : Double
+  rsi_height_contact : Double
+  initial_impact_peak_n : Double
+  active_peak_force_n : Double
+  loading_rate_n_s : Double
+  dynamic_stiffness_n_m : Double
+  events : @event.EventIndices
+} derive(Eq, @debug.Debug)
+
+pub struct SJReport {
+  jump_height_flight_m : Double
+  jump_height_impulse_m : Double
+  peak_force_n : Double
+  peak_power_w : Double
+  concentric_duration_s : Double
+  countermovement_dip_detected : Bool
+  max_countermovement_dip_n : Double
+  events : @event.EventIndices
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
+
