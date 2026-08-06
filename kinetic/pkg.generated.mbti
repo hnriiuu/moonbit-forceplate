@@ -1,0 +1,60 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "hnriiuu/moonbit_forceplate/kinetic"
+
+import {
+  "hnriiuu/moonbit_forceplate/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn calculate_impulse(Array[Double], Array[Double], Double, Int, Int) -> ImpulseMetrics
+
+pub fn calculate_rfd_metrics(Array[Double], Array[Double], Int) -> RFDMetrics
+
+pub fn compute_kinematics_from_trial(@core.ForceTrial, Double) -> KinematicsWaveform
+
+pub fn compute_rfd_series(Array[Double], Array[Double]) -> Array[Double]
+
+pub fn cumulative_integrate(Array[Double], Array[Double]) -> Array[Double]
+
+pub fn estimate_body_mass(Array[Double], Int, Int) -> Double
+
+pub fn gravity_constant() -> Double
+
+pub fn integrate_simpson(Array[Double], Array[Double], Int, Int) -> Double
+
+pub fn integrate_trapezoidal(Array[Double], Array[Double], Int, Int) -> Double
+
+// Errors
+
+// Types and methods
+pub struct ImpulseMetrics {
+  total_impulse : Double
+  net_impulse : Double
+  braking_impulse : Double
+  propulsive_impulse : Double
+} derive(Eq, @debug.Debug)
+
+pub struct KinematicsWaveform {
+  timestamps : Array[Double]
+  fz : Array[Double]
+  net_force : Array[Double]
+  acceleration : Array[Double]
+  velocity : Array[Double]
+  displacement : Array[Double]
+  power : Array[Double]
+} derive(Eq, @debug.Debug)
+
+pub struct RFDMetrics {
+  peak_rfd : Double
+  peak_rfd_timestamp : Double
+  rfd_0_50ms : Double
+  rfd_0_100ms : Double
+  rfd_0_150ms : Double
+  rfd_0_200ms : Double
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
+
