@@ -13,17 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup MoonBit toolchain
-        uses: moonbitlang/setup-moonbit-action@v1
+      - name: Install MoonBit CLI
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix_installer.sh | bash
+          echo "$HOME/.moon/bin" >> $GITHUB_PATH
 
       - name: MoonBit Check
-        run: moon check
+        run: ~/.moon/bin/moon check
 
       - name: MoonBit Test
-        run: moon test
+        run: ~/.moon/bin/moon test
 
       - name: Check Code Formatting
-        run: moon fmt --deny-warn
+        run: ~/.moon/bin/moon fmt --deny-warn
 
       - name: Check Package Interface Files (.mbti)
-        run: moon info --deny-warn
+        run: ~/.moon/bin/moon info --deny-warn
