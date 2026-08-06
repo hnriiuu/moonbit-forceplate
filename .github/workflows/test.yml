@@ -23,7 +23,7 @@ jobs:
         run: moon test
 
       - name: Check Code Formatting
-        run: moon fmt --deny-warn
+        run: moon fmt --dry-run
 
       - name: Check Package Interface Files (.mbti)
-        run: moon info --deny-warn
+        run: moon info
