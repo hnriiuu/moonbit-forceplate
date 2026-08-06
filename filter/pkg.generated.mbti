@@ -1,0 +1,44 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "hnriiuu/moonbit_forceplate/filter"
+
+import {
+  "hnriiuu/moonbit_forceplate/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn apply_biquad_forward(Array[Double], BiquadCoeffs) -> Array[Double]
+
+pub fn apply_biquad_zero_phase(Array[Double], BiquadCoeffs) -> Array[Double]
+
+pub fn apply_moving_average(Array[Double], Int) -> Array[Double]
+
+pub fn apply_savitzky_golay_5(Array[Double]) -> Array[Double]
+
+pub fn apply_savitzky_golay_7(Array[Double]) -> Array[Double]
+
+pub fn apply_threshold_zeroing(Array[Double], Double) -> Array[Double]
+
+pub fn compute_butterworth_highpass(Double, Double) -> BiquadCoeffs
+
+pub fn compute_butterworth_lowpass(Double, Double) -> BiquadCoeffs
+
+pub fn filter_trial_forces(@core.ForceTrial, Double, Bool) -> @core.ForceTrial
+
+pub fn tan_approx(Double) -> Double
+
+// Errors
+
+// Types and methods
+pub struct BiquadCoeffs {
+  b0 : Double
+  b1 : Double
+  b2 : Double
+  a1 : Double
+  a2 : Double
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
+
